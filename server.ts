@@ -4,7 +4,8 @@ import fastifyHelmet from "@fastify/helmet";
 import cors from "@fastify/cors";
 
 // Routes
-import { home } from "./src/routes/homeRoutes.js";
+import user from "./src/routes/userRoutes.js";
+import pizza from "./src/routes/pizzaRoutes.js";
 
 dotenv.config();
 
@@ -12,7 +13,7 @@ const app = Fastify({
   logger: true,
 });
 
-await app.register(cors, {
+app.register(cors, {
   origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -26,9 +27,9 @@ app.register(fastifyHelmet, {
 });
 
 // Routes
-app.register(home);
+app.register(user, { prefix: "/usuarios" });
+app.register(pizza, { prefix: "/pizzas" });
 
 app.listen({ port: 3000 }, () => {
   console.log("Server is running");
-  
 });
