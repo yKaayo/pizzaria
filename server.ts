@@ -1,4 +1,4 @@
-import Fastify from "fastify";
+import { fastify, FastifyInstance } from "fastify";
 import dotenv from "dotenv";
 import fastifyHelmet from "@fastify/helmet";
 import cors from "@fastify/cors";
@@ -6,10 +6,11 @@ import cors from "@fastify/cors";
 // Routes
 import user from "./src/routes/userRoutes.js";
 import pizza from "./src/routes/pizzaRoutes.js";
+import token from "./src/routes/tokenRoutes.js";
 
 dotenv.config();
 
-const app = Fastify({
+const app: FastifyInstance = fastify({
   logger: true,
 });
 
@@ -29,6 +30,7 @@ app.register(fastifyHelmet, {
 // Routes
 app.register(user, { prefix: "/usuarios" });
 app.register(pizza, { prefix: "/pizzas" });
+app.register(token, { prefix: "/token" });
 
 app.listen({ port: 3000 }, () => {
   console.log("Server is running");
