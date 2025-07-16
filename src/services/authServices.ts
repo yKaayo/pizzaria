@@ -17,6 +17,6 @@ export const hashPassword = async (password: string) => {
     return await argon2.hash(password);
   } catch (error) {
     console.error(error);
-    throw new Error("Error hashing password");
+    throw new Error("Erro ao criptografar a senha!");
   }
 };
