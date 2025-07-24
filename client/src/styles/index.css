@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Roboto", sans-serif;
+  --font-italian: "Italianno", sans-serif;
+
+  --color-dark-gray: #2d2d2d;
+  --color-light-gray: #555555;
+  --color-orange: #fd5c2e;
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-weight: 400 700;
+  src: url("../assets/fonts/Roboto-VariableFont_wdth\,wght.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "Italianno";
+  font-weight: 400;
+  src: url("../assets/fonts/Italianno-Regular.ttf") format("truetype");
+}
+
+a,
+button {
+  @apply cursor-pointer;
+}
+
+/* Components */
+.nav--list {
+  @apply flex gap-8;
+}
+/* Components - End */
+
+/* Header */
+.header {
+  background:
+    linear-gradient(to bottom right, #fd5c2e, #fe7122),
+    url(./assets/images/bgDetail.webp) center / cover repeat;
+  background-blend-mode: overlay;
+  background-size: auto;
+  background-repeat: repeat;
+  background-position: center;
+}
+/* Header - End */
