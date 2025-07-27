@@ -1,4 +1,3 @@
-import { PrismaClient } from "../generated/prisma/index.js";
 import validator from "validator";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
@@ -10,7 +9,10 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { User as UserEntity } from "../generated/prisma/index.js";
 import { UserGetById } from "../../types/userTypes.js";
 
-const userModel = new UserModel(new PrismaClient());
+// Service
+import prisma from "../services/db.js";
+
+const userModel = new UserModel(prisma);
 
 export const getUser = async (
   req: FastifyRequest<{ Params: { id: string } }>,

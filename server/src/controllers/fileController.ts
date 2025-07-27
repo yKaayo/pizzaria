@@ -1,4 +1,3 @@
-import { PrismaClient } from "../generated/prisma/index.js";
 import { pipeline } from "stream";
 import fs from "fs";
 import util from "util";
@@ -13,6 +12,9 @@ import { Image as ImageEntity } from "../generated/prisma/index.js";
 import FileModel from "../models/FileModel";
 import PizzaModel from "../models/PizzaModel";
 
+// Service
+import prisma from "../services/db";
+
 interface MultipartFile {
   fieldname: string;
   filename: string;
@@ -21,26 +23,8 @@ interface MultipartFile {
   toBuffer: () => Promise<Buffer>;
 }
 
-const pizzaModel = new PizzaModel(new PrismaClient());
-const fileModel = new FileModel(new PrismaClient());
-
-export const getFile = async (
-  req: FastifyRequest<{ Params: { id: string } }>,
-  rep: FastifyReply
-) => {
-  const id = parseInt(req.params.id);
-  if (isNaN(id)) return rep.status(400).send({ error: "ID inválido." });
-
-  try {
-    return rep.status(200).send();
-  } catch (error) {
-    rep.log.error(
-      { err: error },
-      `Erro interno ao buscar usuário com ID ${id}!`
-    );
-    return rep.status(500).send({ error: "Erro ao buscar o usuário!" });
-  }
-};
+const pizzaModel = new PizzaModel(prisma);
+const fileModel = new FileModel(prisma);
 
 export const createFile = async (req: FastifyRequest, rep: FastifyReply) => {
   let id: string | undefined;

@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import fastifyHelmet from "@fastify/helmet";
 import cors from "@fastify/cors";
 import fastifyMultipart from "@fastify/multipart";
+import fastifyStatic from "@fastify/static";
+import path from "path";
 
 // Routes
 import user from "./src/routes/userRoutes";
@@ -25,6 +27,10 @@ app.register(cors, {
 
 // Files
 app.register(fastifyMultipart);
+app.register(fastifyStatic, {
+  root: path.join(process.cwd(), "..", "server", "uploads"),
+  prefix: "/uploads/",
+});
 
 // Security
 app.register(fastifyHelmet, {

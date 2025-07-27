@@ -1,10 +1,12 @@
-import { PrismaClient, User as UserEntity } from "../generated/prisma/index.js";
+import { User as UserEntity } from "../generated/prisma/index.js";
+
+// Service
+import prisma from "../services/db.js";
 
 // Model
 import UserModel from "./UserModel";
 
 describe("UserModel", () => {
-  const prisma = new PrismaClient();
   const user = new UserModel(prisma);
 
   it("It should return a user", async () => {

@@ -3,6 +3,6 @@ import { FastifyInstance } from "fastify";
 // Controllers
 import { store } from "../controllers/tokenController";
 
-export default async function token(fastify: FastifyInstance) {
-  fastify.post("/", store);
+export default async function token(app: FastifyInstance) {
+  app.post("/", store);
 }

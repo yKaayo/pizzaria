@@ -1,5 +1,4 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { PrismaClient } from "../generated/prisma/index.js";
 
 // Types
 import { Pizza as PizzaEntity } from "../generated/prisma/index.js";
@@ -7,7 +6,10 @@ import { Pizza as PizzaEntity } from "../generated/prisma/index.js";
 // Model
 import PizzaModel from "../models/PizzaModel";
 
-const pizzaModel = new PizzaModel(new PrismaClient());
+// Service
+import prisma from "../services/db";
+
+const pizzaModel = new PizzaModel(prisma);
 
 export const getPizzas = async (req: FastifyRequest, rep: FastifyReply) => {
   try {

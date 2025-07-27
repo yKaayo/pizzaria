@@ -172,7 +172,9 @@ const config = {
         "native": true
       }
     ],
-    "previewFeatures": [],
+    "previewFeatures": [
+      "typedSql"
+    ],
     "sourceFilePath": "C:\\Users\\Caio\\Documents\\GitHub\\pizzaria\\server\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
@@ -187,6 +189,7 @@ const config = {
     "db"
   ],
   "activeProvider": "mysql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -195,8 +198,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id         Int      @id @default(autoincrement())\n  password   String\n  name       String\n  email      String   @unique\n  number     String   @unique\n  is_admin   Boolean  @default(false)\n  created_at DateTime @default(now())\n  Order      Order[]\n\n  @@map(\"users\")\n}\n\nmodel Pizza {\n  id       Int     @id @default(autoincrement())\n  name     String  @unique\n  quantity Int\n  Order    Order[]\n  Image    Image?\n\n  @@map(\"pizzas\")\n}\n\nmodel Order {\n  id      Int   @id @default(autoincrement())\n  userId  Int\n  pizzaId Int\n  user    User  @relation(fields: [userId], references: [id])\n  pizza   Pizza @relation(fields: [pizzaId], references: [id])\n\n  @@map(\"orders\")\n}\n\nmodel Image {\n  id      Int    @id @default(autoincrement())\n  path    String @unique\n  pizzaId Int    @unique\n  pizza   Pizza  @relation(fields: [pizzaId], references: [id])\n\n  @@map(\"images\")\n}\n",
-  "inlineSchemaHash": "d408b8032f00bf66197871b59403005f6e3aa63df20150cd0fd23bb805251580",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../src/generated/prisma\"\n  previewFeatures = [\"typedSql\"]\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id         Int      @id @default(autoincrement())\n  password   String\n  name       String\n  email      String   @unique\n  number     String   @unique\n  is_admin   Boolean  @default(false)\n  created_at DateTime @default(now())\n  Order      Order[]\n\n  @@map(\"users\")\n}\n\nmodel Pizza {\n  id       Int     @id @default(autoincrement())\n  name     String  @unique\n  quantity Int\n  Order    Order[]\n  Image    Image?\n\n  @@map(\"pizzas\")\n}\n\nmodel Order {\n  id      Int   @id @default(autoincrement())\n  userId  Int\n  pizzaId Int\n  user    User  @relation(fields: [userId], references: [id])\n  pizza   Pizza @relation(fields: [pizzaId], references: [id])\n\n  @@map(\"orders\")\n}\n\nmodel Image {\n  id      Int    @id @default(autoincrement())\n  path    String @unique\n  pizzaId Int    @unique\n  pizza   Pizza  @relation(fields: [pizzaId], references: [id])\n\n  @@map(\"images\")\n}\n",
+  "inlineSchemaHash": "3e1c6f0cb343e08c918ce378ae31ad0731c2a6351cfc09d2a80e09bb04086760",
   "copyEngine": true
 }
 

@@ -1,7 +1,6 @@
 import validator from "validator";
 import "dotenv/config";
 import jwt from "jsonwebtoken";
-import { PrismaClient } from "../generated/prisma/index.js";
 
 // Services
 import { comparePasswords } from "../services/authServices.js";
@@ -9,6 +8,9 @@ import { comparePasswords } from "../services/authServices.js";
 // Types
 import { FastifyRequest, FastifyReply } from "fastify";
 import { User } from "../types/types.js";
+
+// Service
+import prisma from "../services/db";
 
 export const store = async (
   req: FastifyRequest<{ Body: Pick<User, "email" | "password"> }>,
@@ -20,8 +22,6 @@ export const store = async (
   if (!validator.isEmail(email))
     return rep.status(401).send({ error: "Email inválido!" });
   if (!password) return rep.status(400).send({ error: "Senha não informada!" });
-
-  const prisma = new PrismaClient();
 
   const user = await prisma.user.findUnique({
     where: { email },
