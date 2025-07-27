@@ -3,11 +3,12 @@ import validator from "validator";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 // Model
-import UserModel from "../models/UserModel.js";
+import UserModel from "../models/UserModel";
 
 // Types
 import { FastifyRequest, FastifyReply } from "fastify";
-import { User, RequiredBy } from "../types/types.js";
+import { User as UserEntity } from "../generated/prisma/index.js";
+import { UserGetById } from "../../types/userTypes.js";
 
 const userModel = new UserModel(new PrismaClient());
 
@@ -19,7 +20,7 @@ export const getUser = async (
   if (isNaN(id)) return rep.status(400).send({ error: "ID inválido." });
 
   try {
-    const user = await userModel.getById(id);
+    const user: UserGetById = await userModel.getById(id);
     if (!user)
       return rep
         .status(404)
@@ -36,7 +37,11 @@ export const getUser = async (
 };
 
 export const createUser = async (
-  req: FastifyRequest<{ Body: User }>,
+  req: FastifyRequest<{
+    Body: Omit<UserEntity, "id" | "is_admin" | "created_at"> & {
+      is_admin?: string;
+    };
+  }>,
   rep: FastifyReply
 ) => {
   const { email, number, ...rest } = req.body;
@@ -82,22 +87,22 @@ export const createUser = async (
 };
 
 export const updateUser = async (
-  req: FastifyRequest<{ Body: RequiredBy<User, "id"> }>,
+  req: FastifyRequest<{
+    Body: Omit<UserEntity, "is_admin" | "created_at"> & {
+      is_admin?: string;
+    };
+  }>,
   rep: FastifyReply
 ) => {
-  const { id: _id, email, ...data } = req.body;
-
-  const id = parseInt(_id);
-  if (isNaN(id))
-    return rep.status(400).send({ error: "O ID fornecido é inválido!" });
+  const { id, ...data } = req.body;
 
   try {
-    const existingUser = await userModel.getById(id);
+    const existingUser: UserGetById = await userModel.getById(id);
     if (!existingUser) {
       return rep.status(404).send({ error: "Usuário não encontrado." });
     }
 
-    const updated = await userModel.update(id, data);
+    const updated: UserEntity = await userModel.update(id, data);
     return rep.status(200).send({
       message: "Usuário atualizado com sucesso.",
       user: updated,
@@ -116,11 +121,12 @@ export const deleteUser = async (
   rep: FastifyReply
 ) => {
   const id = parseInt(req.body.id);
+  
   if (isNaN(id))
     return rep.status(400).send({ error: "O ID fornecido é inválido!" });
 
   try {
-    const deletedUser = await userModel.delete(id);
+    const deletedUser: UserEntity = await userModel.delete(id);
     return rep.status(200).send(deletedUser);
   } catch (error) {
     if (

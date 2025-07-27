@@ -2,11 +2,13 @@ import { fastify, FastifyInstance } from "fastify";
 import dotenv from "dotenv";
 import fastifyHelmet from "@fastify/helmet";
 import cors from "@fastify/cors";
+import fastifyMultipart from "@fastify/multipart";
 
 // Routes
 import user from "./src/routes/userRoutes";
 import pizza from "./src/routes/pizzaRoutes";
 import token from "./src/routes/tokenRoutes";
+import file from "./src/routes/fileRoutes";
 
 dotenv.config();
 
@@ -21,6 +23,9 @@ app.register(cors, {
   credentials: true,
 });
 
+// Files
+app.register(fastifyMultipart);
+
 // Security
 app.register(fastifyHelmet, {
   global: true,
@@ -31,6 +36,7 @@ app.register(fastifyHelmet, {
 app.register(user, { prefix: "/usuarios" });
 app.register(pizza, { prefix: "/pizzas" });
 app.register(token, { prefix: "/token" });
+app.register(file, { prefix: "/imagem" });
 
 app.listen({ port: 3000 }, () => {
   console.log("Server is running");

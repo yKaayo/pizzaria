@@ -22,7 +22,7 @@ const Header = () => {
             </ul>
           </nav>
 
-          <h1 className="font-italian text-4xl my-1.5">
+          <h1 className="font-italian text-5xl my-1.5">
             Pizzalicious
           </h1>
 

@@ -1,43 +1,37 @@
 import { PrismaClient } from "../generated/prisma/index.js";
+
+// Type
 import { User as UserEntity } from "../generated/prisma/index.js";
 
 // Interface
-import {
-  UserReaderProtocol,
-  UserWriterProtocol,
-} from "../interfaces/UserProtocol.js";
+import { UserProtocol } from "../interfaces/UserProtocol";
 
 // Service
 import { hashPassword } from "../services/authServices";
 
-// Type
-import { User } from "../types/types.js";
-
-export default class UserModel
-  implements UserReaderProtocol, UserWriterProtocol
-{
+export default class UserModel implements UserProtocol {
   constructor(private readonly _prisma: PrismaClient) {}
 
   async getById(id: number) {
-    return this._prisma.user.findUnique({
+    return await this._prisma.user.findUnique({
       where: { id },
-      select: { name: true, email: true },
+      select: { name: true, email: true, is_admin: true },
     });
   }
 
   async findByEmail(email: string) {
-    return this._prisma.user.findFirst({
+    return await this._prisma.user.findFirst({
       where: { email },
       select: { email: true, number: true },
     });
   }
 
-  async create(user: Omit<User, "id">) {
-    const { name, email, number, password } = user;
+  async create(user: Omit<UserEntity, "id" | "created_at">) {
+    const { password, ...rest } = user;
     const hashedPassword = await hashPassword(password);
 
-    return this._prisma.user.create({
-      data: { name, email, number, password: hashedPassword },
+    return await this._prisma.user.create({
+      data: { ...rest, password: hashedPassword },
     });
   }
 
@@ -46,10 +40,10 @@ export default class UserModel
       userData.password = await hashPassword(userData.password);
     }
 
-    return this._prisma.user.update({ where: { id }, data: userData });
+    return await this._prisma.user.update({ where: { id }, data: userData });
   }
 
   async delete(id: number) {
-    return this._prisma.user.delete({ where: { id } });
+    return await this._prisma.user.delete({ where: { id } });
   }
 }
