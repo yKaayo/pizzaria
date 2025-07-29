@@ -9,5 +9,6 @@ export const getAllPizzas = async () => {
     return data;
   } catch (error) {
     console.error(error);
+    return [];
   }
 };

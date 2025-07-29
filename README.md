@@ -1,69 +1,119 @@
-# React + TypeScript + Vite
+# Projeto Pizzaria
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Visão Geral
 
-Currently, two official plugins are available:
+Pizzaria é uma aplicação web full-stack desenvolvida para proporcionar uma experiência fluida de pedido de pizza online. O projeto consiste em um frontend moderno baseado em React e um backend robusto em Node.js, utilizando TypeScript e Prisma ORM para gerenciamento do banco de dados. Esta aplicação demonstra as melhores práticas em desenvolvimento web, incluindo design de API RESTful, autenticação e gerenciamento de estado.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tecnologias Utilizadas
 
-## Expanding the ESLint configuration
+### Frontend
+- React com TypeScript
+- Vite como ferramenta de build
+- CSS para estilização
+- React Router para roteamento no cliente
+- Gerenciamento de estado com Redux Toolkit
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Backend
+- Node.js com TypeScript
+- Express.js para API REST
+- Prisma ORM para modelagem e migrações do banco de dados
+- Autenticação baseada em JWT
+- Middlewares para autorização e controle de acesso de administradores
+- PostgreSQL como banco de dados
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Começando
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Pré-requisitos
+- Node.js (recomendado v16 ou superior)
+- Gerenciador de pacotes npm ou yarn
+- Instância de banco de dados PostgreSQL
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Instalação
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/yKaayo/pizzaria.git
+   cd pizzaria
+   ```
+
+2. Instale as dependências tanto do cliente quanto do servidor:
+   ```bash
+   cd client
+   pnpm install
+   cd ../server
+   pnpm install
+   ```
+
+3. Configure as variáveis de ambiente:
+
+   Crie arquivos `.env` nos diretórios `client` e `server` conforme necessário. Variáveis típicas incluem:
+
+   - `DATABASE_URL` para a string de conexão do banco de dados Prisma
+   - `JWT_SECRET` para tokens de autenticação
+   - Outras chaves de API ou variáveis de configuração
+
+4. Execute as migrações do Prisma para configurar o esquema do banco:
+
+   ```bash
+   npx prisma migrate deploy
+   ```
+
+### Executando a Aplicação
+- Para iniciar o servidor backend:
+  ```bash
+  pnpm dev
+  ```
+
+- Para iniciar o servidor de desenvolvimento do frontend:
+  ```bash
+  cd ../client
+  pnpm dev
+  ```
+
+O frontend estará disponível tipicamente em `http://localhost:5173` e a API backend em `http://localhost:3000` (ou conforme configurado).
+
+## Estrutura do Projeto
+
+```
+pizzaria/
+├── client/                 # Código fonte do frontend React
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── ...
+├── server/                 # Código fonte do backend Node.js
+│   ├── src/
+│   │   ├── controllers/    # Controladores das rotas da API
+│   │   ├── models/         # Modelos do banco de dados
+│   │   ├── routes/         # Definições das rotas Express
+│   │   ├── middlewares/    # Autenticação e autorização
+│   │   ├── services/       # Lógica de negócio e utilitários
+│   │   └── prisma/         # Esquema e migrações do Prisma
+│   ├── package.json
+│   └── ...
+├── README.md
+└── ...
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Testes
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Os testes do backend podem ser executados com:
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+  ```bash
+  cd ../server
+  pnpm test
+  ```
+
+- Testes do frontend (se houver) podem ser executados de forma similar no diretório do cliente.
+
+## Contribuindo
+
+Contribuições são bem-vindas! Por favor, faça um fork do repositório e crie um pull request com suas alterações. Certifique-se de seguir o estilo de código existente e incluir testes quando aplicável.
+
+## Licença
+
+Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+Obrigado por conferir o projeto Pizzaria! Se tiver dúvidas ou problemas, por favor abra uma issue no GitHub.

@@ -54,7 +54,6 @@ export const createFile = async (req: FastifyRequest, rep: FastifyReply) => {
 
   // Validate pizza
   const pizzaId = parseInt(id);
-  console.log(pizzaId);
 
   if (isNaN(pizzaId)) return rep.status(400).send({ error: "ID inválido." });
 
@@ -77,19 +76,18 @@ export const createFile = async (req: FastifyRequest, rep: FastifyReply) => {
     });
   }
 
-  const uploadsDir = path.join(process.cwd(), "uploads");
   const extension = file.mimetype.split("/")[1];
   const filename = `${Date.now()}_${Math.floor(
     Math.random() * 100000
   )}.${extension}`;
-  const filepath = path.join(uploadsDir, filename);
+  const filepath = path.join("uploads", filename);
 
   try {
     const pump = util.promisify(pipeline);
     await pump(file?.file, fs.createWriteStream(filepath));
 
     const image: ImageEntity = await fileModel.create({
-      path: filepath,
+      path: "/" + filepath,
       pizzaId,
     });
     return rep.status(201).send(image);

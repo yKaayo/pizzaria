@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router";
 import { ToastContainer } from "react-toastify";
+import { Provider } from "react-redux";
+import store from "./store";
 
 // Layout
 import Header from "./layout/Header";
@@ -8,9 +10,8 @@ import Header from "./layout/Header";
 import Home from "./pages/public/Home";
 import About from "./pages/public/About";
 import NotFound from "./pages/public/NotFound";
+import Menu from "./pages/public/Menu";
 import PrivateRouter from "./components/PrivateRouter";
-import store from "./store/index";
-import { Provider } from "react-redux";
 
 const App = () => {
   return (
@@ -23,8 +24,11 @@ const App = () => {
           <Route path="/sobre-mim" element={<About />} />
           <Route
             path="/sobre-mim1"
-            element={<PrivateRouter isClosed={true} element={() => <About />} />}
+            element={
+              <PrivateRouter isClosed={true} element={() => <About />} />
+            }
           />
+          <Route path="/menu" element={<Menu />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
 
